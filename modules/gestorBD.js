@@ -128,15 +128,25 @@ module.exports = {
                                 funcionCallBack(null);
                             } else {
                                 let collectionUs = db.collection('usuarios')
-                                criterio={"email": {$regex: invitaciones[0].usuarioEmisor||invitaciones[1].usuarioEmisor||invitaciones[2].usuarioEmisor||invitaciones[3].usuarioEmisor }}
-                                collectionUs.find(criterio).toArray(function(err, usuarios) {
-                                        if (err) {
-                                            funcionCallBack(null);
-                                        } else {
-                                            funcionCallBack(usuarios,count);
-                                        }
-                                    })
+                                if(invitaciones.length==0){
+                                    funcionCallBack(invitaciones);
+                                }else {
+                                    let usuariosList=[]
+                                    for(let i=0;i<invitaciones.length;i++) {
+                                        criterio = {"email": invitaciones[i].usuarioEmisor}
+                                        collectionUs.find(criterio).toArray(function (err, usuarios) {
+                                            if (err) {
+                                                funcionCallBack(null);
+                                            } else {
+                                                usuariosList[i] = usuarios[0]
+                                                if(i==invitaciones.length-1)
+                                                    funcionCallBack(usuariosList, count);
+                                            }
+                                        })
+                                    }
 
+
+                                }
                             db.close();
                             }
                         });
@@ -144,5 +154,24 @@ module.exports = {
             }
         });
 
-    }
+    },
+    aceptarInvitacion : function(criterio,invitacion, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('invitaciones');
+                collection.update(criterio,{$set: invitacion}, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+
 };
