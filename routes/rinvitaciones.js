@@ -67,19 +67,30 @@ module.exports = function(app,swig,gestorBD) {
     app.get('/invitaciones/lista',function(req,res){
 
         if(req.session.usuario!=null) {
+
             let criterio = {"usuarioReceptor": req.session.usuario, "aceptada": false};
 
             let pg = parseInt(req.query.pg); // Es String !!!
             if (req.query.pg == null) { // Puede no venir el param
                 pg = 1;
             }
-            gestorBD.obtenerUsuariosDeInvitacionesPropiasPg(criterio,pg,function(usuarios,paginas){
+            gestorBD.obtenerUsuariosDeInvitacionesPropiasPg(criterio,pg,function(usuarios,total){
                 if(usuarios==null){
                     res.redirect("/identificarse");
                 }else if(usuarios.length==0){
                     res.send("No tienes invitaciones")
                 }
                 else {
+                    let ultimaPg = total / 4;
+                    if (total % 4 > 0) { // Sobran decimales
+                        ultimaPg = ultimaPg + 1;
+                    }
+                    let paginas = []; // paginas mostrar
+                    for (let i = pg - 2; i <= pg + 2; i++) {
+                        if (i > 0 && i <= ultimaPg) {
+                            paginas.push(i);
+                        }
+                    }
                     let respuesta = swig.renderFile('views/bInvitacionLista.html',
                         {
                             usuarios: usuarios,
@@ -124,12 +135,22 @@ module.exports = function(app,swig,gestorBD) {
             if (req.query.pg == null) { // Puede no venir el param
                 pg = 1;
             }
-            gestorBD.obtenerUsuariosDeInvitacionesPropiasPg(criterio, pg, function (usuarios, paginas) {
+            gestorBD.obtenerUsuariosDeInvitacionesPropiasPg(criterio, pg, function (usuarios, total) {
                 if (usuarios == null) {
                     res.redirect("/identificarse");
                 } else if (usuarios.length == 0) {
                     res.send("No tienes amigos")
                 } else {
+                    let ultimaPg = total / 4;
+                    if (total % 4 > 0) { // Sobran decimales
+                        ultimaPg = ultimaPg + 1;
+                    }
+                    let paginas = []; // paginas mostrar
+                    for (let i = pg - 2; i <= pg + 2; i++) {
+                        if (i > 0 && i <= ultimaPg) {
+                            paginas.push(i);
+                        }
+                    }
                     let respuesta = swig.renderFile('views/bAmigosLista.html',
                         {
                             usuarios: usuarios,
