@@ -6,7 +6,7 @@
 <!-- Búsqueda -->
 <div class="row">
     <div id="custom-search-input ">
-        <form method="get" action="/usuarios/lista" >
+        <form method="get" action="/invitaciones/lista" >
             <div
                     class="input-group col-xs-8 col-sm-6 col-md-4 col-lg-5 pull-right">
                 <input type="text" class="search-query form-control"
@@ -20,18 +20,15 @@
         </form>
     </div>
 </div>
-<h2>Usuarios</h2>
+<h2>Invitaciones</h2>
 <div class="list">
     {% for usuario in usuarios %}
     <div>
         <div>
-                <div class="wrap">Nombre: {{ usuario.name }}</div>
-                <div class="wrap">Apellido:  {{ usuario.surname }}</div>
-                <div class="wrap">Email: {{ usuario.email }}</div>
-                <div class="wrap"><a href="/invitacion/{{usuario.email}}">Enviar Invitacion</a></div>
-                <br><br><br>
-
-
+            <div class="wrap">Nombre: {{ usuario.name }}</div>
+            <div class="wrap">Apellido:  {{ usuario.surname }}</div>
+            <div class="wrap"><a href="/invitacion/{{usuario.email}}/aceptar">Aceptar Invitacion</a></div>
+            <br><br><br>
         </div>
     </div>
     {% endfor %}
