@@ -29,7 +29,7 @@ gestorBD.init(app,mongo);
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function(req, res, next) {
-    console.log("routerUsuarioSession");
+    //console.log("routerUsuarioSession");
     if ( req.session.usuario ) {
         // dejamos correr la petición
         next();

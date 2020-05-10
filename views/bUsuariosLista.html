@@ -12,7 +12,7 @@
                 <input type="text" class="search-query form-control"
                        placeholder="Nombre del Usuario" name="busqueda"/>
                 <span class="input-group-btn">
-<button class="btn" type="submit">
+<button class="btn" type="submit" name="botonBuscar">
 <span class="glyphicon glyphicon-search"></span>
 </button>
 </span>
@@ -23,12 +23,12 @@
 <h2>Usuarios</h2>
 <div class="list">
     {% for usuario in usuarios %}
-    <div>
+    <div class="fila">
         <div>
                 <div class="wrap">Nombre: {{ usuario.name }}</div>
                 <div class="wrap">Apellido:  {{ usuario.surname }}</div>
                 <div class="wrap">Email: {{ usuario.email }}</div>
-                <div class="wrap"><a href="/invitacion/{{usuario.email}}">Enviar Invitacion</a></div>
+                <div  name="invitar"><a class="invitar" href="/invitacion/{{usuario.email}}">Enviar Invitacion</a></div>
                 <br><br><br>
 
 

@@ -23,11 +23,11 @@
 <h2>Invitaciones</h2>
 <div class="list">
     {% for usuario in usuarios %}
-    <div>
+    <div class="fila">
         <div>
             <div class="wrap">Nombre: {{ usuario.name }}</div>
             <div class="wrap">Apellido:  {{ usuario.surname }}</div>
-            <div class="wrap"><a href="/invitacion/{{usuario.email}}/aceptar">Aceptar Invitacion</a></div>
+            <div class="wrap"><a class="aceptar" href="/invitacion/{{usuario.email}}/aceptar">Aceptar Invitacion</a></div>
             <br><br><br>
         </div>
     </div>
