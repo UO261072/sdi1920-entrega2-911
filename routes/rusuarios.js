@@ -24,9 +24,11 @@ module.exports = function(app,swig,gestorBD) {
                     else {
                         gestorBD.insertarUsuario(usuario, function (id) {
                             if (id == null) {
-                                res.send("Error al insertar el usuario");
+                                res.redirect("/registrarse" +
+                                    "?mensaje=Error al registrarse"+
+                                    "&tipoMensaje=alert-danger ");
                             } else {
-                                res.send('Usuario Insertado ' + id);
+                                res.redirect('/usuarios/lista')
                             }
                         });
                     }

@@ -155,6 +155,44 @@ module.exports = {
         });
 
     },
+    obtenerUsuariosDeInvitacionesPropias: function (criterio,funcionCallBack) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallBack(null);
+            } else {
+                let collectionInv = db.collection('invitaciones');
+                    collectionInv.find(criterio).toArray(function(err, invitaciones) {
+                            if (err) {
+                                funcionCallBack(null);
+                            } else {
+                                let collectionUs = db.collection('usuarios')
+                                if(invitaciones.length==0){
+                                    funcionCallBack(invitaciones);
+                                }else {
+                                    let usuariosList=[]
+                                    for(let i=0;i<invitaciones.length;i++) {
+                                        criterio = {"email": invitaciones[i].usuarioEmisor}
+                                        collectionUs.find(criterio).toArray(function (err, usuarios) {
+                                            if (err) {
+                                                funcionCallBack(null);
+                                            } else {
+                                                usuariosList[i] = usuarios[0]
+                                                if(i==invitaciones.length-1)
+                                                    funcionCallBack(usuariosList);
+                                            }
+                                        })
+                                    }
+
+
+                                }
+                                db.close();
+                            }
+                        });
+
+            }
+        });
+
+    },
     aceptarInvitacion : function(criterio,invitacion, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
@@ -172,6 +210,41 @@ module.exports = {
             }
         });
     },
+    insertarMensaje :function (mensaje,funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'),function (err,db) {
+            if(err){
+                funcionCallback(null)
+            }else{
+                let collection =db.collection('mensajes');
+                collection.insert(mensaje, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        })
 
+    },
+    obtenerConversacion: function (criterio,funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'),function (err,db) {
+            if(err){
+                funcionCallback(null)
+            }else{
+                let collection =db.collection('mensajes');
+                collection.find(criterio).toArray(function(err, mensajes) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(mensajes);
+                    }
+                    db.close();
+                });
+            }
+        })
+
+    }
 
 };

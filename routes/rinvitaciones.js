@@ -78,7 +78,8 @@ module.exports = function(app,swig,gestorBD) {
                 if(usuarios==null){
                     res.redirect("/identificarse");
                 }else if(usuarios.length==0){
-                    res.send("No tienes invitaciones")
+                    let respuesta = swig.renderFile('views/bInvitacionLista.html');
+                    res.send(respuesta);
                 }
                 else {
                     let ultimaPg = total / 4;
@@ -139,7 +140,8 @@ module.exports = function(app,swig,gestorBD) {
                 if (usuarios == null) {
                     res.redirect("/identificarse");
                 } else if (usuarios.length == 0) {
-                    res.send("No tienes amigos")
+                    let respuesta = swig.renderFile('views/bAmigosLista.html');
+                    res.send(respuesta);
                 } else {
                     let ultimaPg = total / 4;
                     if (total % 4 > 0) { // Sobran decimales
