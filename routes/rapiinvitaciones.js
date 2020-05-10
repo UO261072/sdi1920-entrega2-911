@@ -16,8 +16,8 @@ module.exports = function(app, gestorBD) {
     });
 
     app.get('/api/amigos/lista',function (req,res) {
-        let criterio = {"usuarioReceptor": req.session.usuario, "aceptada": true};
-       gestorBD.obtenerUsuariosDeInvitacionesPropias(criterio,function (invitaciones) {
+        let criterio = {$or: [{"usuarioReceptor": req.session.usuario},{"usuarioEmisor": req.session.usuario}], "aceptada": true};
+       gestorBD.obtenerUsuariosDeInvitacionesPropias(criterio,req.session.usuario,function (invitaciones) {
             if(invitaciones==null){
                 res.status(500);
                 res.json({

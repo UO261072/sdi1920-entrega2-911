@@ -155,7 +155,7 @@ module.exports = {
         });
 
     },
-    obtenerUsuariosDeInvitacionesPropias: function (criterio,funcionCallBack) {
+    obtenerUsuariosDeInvitacionesPropias: function (criterio,usuario,funcionCallBack) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallBack(null);
@@ -171,7 +171,10 @@ module.exports = {
                                 }else {
                                     let usuariosList=[]
                                     for(let i=0;i<invitaciones.length;i++) {
-                                        criterio = {"email": invitaciones[i].usuarioEmisor}
+                                        if(invitaciones[i].usuarioEmisor==usuario)
+                                            criterio = {"email": invitaciones[i].usuarioReceptor}
+                                        else
+                                            criterio = {"email": invitaciones[i].usuarioEmisor}
                                         collectionUs.find(criterio).toArray(function (err, usuarios) {
                                             if (err) {
                                                 funcionCallBack(null);
