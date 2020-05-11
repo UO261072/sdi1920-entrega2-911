@@ -11,7 +11,7 @@
             <th class="col-md-1"></th>
         </tr>
         </thead>
-        <tbody id="tablaCuerpo">
+        <tbody id="tablaCuerpo" class="tablaAmigos">
 
         </tbody>
     </table>
@@ -58,7 +58,7 @@
                 "<td>"+amigosMostrar[i].surname+"</td>" +
                 "<td>"+amigosMostrar[i].email+"</td>" +
                 "<td>"+
-                "<a onclick=mensajes('"+amigosMostrar[i].email+"')>Mostrar conversacion</a><br>"+
+                "<a class=conversacion onclick=mensajes('"+amigosMostrar[i].email+"')>Mostrar conversacion</a><br>"+
                 "</tr>" );
             // Mucho cuidado con las comillas del eliminarCancion
             //la id tiene que ir entre comillas ' '

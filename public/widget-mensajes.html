@@ -14,7 +14,7 @@
             <th class="col-md-1"></th>
         </tr>
         </thead>
-        <tbody id="tablaCuerpo">
+        <tbody class="tablaMensajes" id="tablaCuerpo">
 
         </tbody>
     </table>
@@ -59,7 +59,7 @@
         $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
         for (i = 0; i < mensajesMostrar.length; i++) {
             $( "#tablaCuerpo" ).append(
-                "<tr id="+mensajesMostrar[i]._id+">"+
+                "<tr class=fila id="+mensajesMostrar[i]._id+">"+
                 "<td>"+mensajesMostrar[i].emisor+"</td>" +
                 "<td>"+mensajesMostrar[i].destino+"</td>" +
                 "<td>"+mensajesMostrar[i].texto+"</td>" +

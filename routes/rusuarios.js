@@ -28,6 +28,7 @@ module.exports = function(app,swig,gestorBD) {
                                     "?mensaje=Error al registrarse"+
                                     "&tipoMensaje=alert-danger ");
                             } else {
+                                req.session.usuario = usuario.email;
                                 res.redirect('/usuarios/lista')
                             }
                         });

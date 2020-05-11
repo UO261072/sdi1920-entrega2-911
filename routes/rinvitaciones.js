@@ -40,7 +40,9 @@ module.exports = function(app,swig,gestorBD) {
                                                     "?mensaje=Error al enviar peticion" +
                                                     "&tipoMensaje=alert-danger ");
                                             } else {
-                                                res.redirect("/invitaciones/lista");
+                                                res.redirect("/usuarios/lista" +
+                                                    "?mensaje=Invitacion enviada correctamente" +
+                                                    "&tipoMensaje=alert-danger ");
                                             }
                                         });
                                 })
