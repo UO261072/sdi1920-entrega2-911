@@ -1,6 +1,7 @@
 <div id="widget-canciones" >
     <input type="text" class="form-control" placeholder="Filtrar por nombre"
            id="filtro-nombre"/>
+
     <table class="table table-hover">
         <thead>
         <tr>
@@ -24,7 +25,7 @@
         var nombreFiltro = $("#filtro-nombre").val();
 
         for (i = 0; i < amigos.length; i++) {
-            if (amigos[i].nombre.indexOf(nombreFiltro) != -1 ){
+            if (amigos[i].name.indexOf(nombreFiltro) != -1 ){
                 amigosFiltrados.push(amigos[i]);
             }
         }
@@ -56,11 +57,18 @@
                 "<td>"+amigosMostrar[i].name+"</td>" +
                 "<td>"+amigosMostrar[i].surname+"</td>" +
                 "<td>"+amigosMostrar[i].email+"</td>" +
+                "<td>"+
+                "<a onclick=mensajes('"+amigosMostrar[i].email+"')>Mostrar conversacion</a><br>"+
                 "</tr>" );
             // Mucho cuidado con las comillas del eliminarCancion
             //la id tiene que ir entre comillas ' '
         }
-    }/*
+    }
+    function mensajes(email){
+        emailSeleccionado=email
+        $( "#contenedor-principal" ).load( "widget-mensajes.html");
+    }
+    /*
     function eliminar( _id ) {
         $.ajax({
             url: URLbase + "/cancion/"+_id,

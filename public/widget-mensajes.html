@@ -1,0 +1,132 @@
+<div id="widget-canciones" >
+    <div>
+        <input type="text" class="form-control" placeholder="Nuevo Mensaje"
+               id="nuevo-mensaje"/>
+        <button class="btn btn-primary" onclick="nuevoMensaje()">Nuevo Mensaje</button>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><a onclick="ordenarPorEmisor()">Emisor</a></th>
+            <th><a onclick="ordenarPorDestino()">Destino</a></th>
+            <th><a onclick="ordenarPorTexto()">Texto</a></th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody id="tablaCuerpo">
+
+        </tbody>
+    </table>
+</div>
+<script>
+    window.history.pushState("", "", "/cliente.html?w=mensajes");
+    var email=emailSeleccionado
+
+    $('#filtro-nombre').on('input',function(e){
+        var mensajesFiltrados = [];
+        var nombreFiltro = $("#filtro-nombre").val();
+
+        for (i = 0; i < mensajes.length; i++) {
+            if (mensajes[i].emisor.indexOf(nombreFiltro) != -1 ){
+                mensajesFiltrados.push(mensajes[i]);
+            }
+        }
+        actualizarTabla(mensajesFiltrados);
+    });
+    var mensajes;
+    function cargarMensajes(){
+
+        $.ajax({
+            url: URLbase + "/mensaje/conversacion",
+            type: "GET",
+            data: {
+                user: email
+            },
+            dataType: 'json',
+            headers: { "token": token },
+            success: function(respuesta) {
+                console.log(respuesta)
+                mensajes = respuesta;
+                actualizarTabla(mensajes);
+            },
+            error : function (error){
+                $( "#contenedor-principal" ).load("widget-login.html");
+            }
+        });
+    }
+    function actualizarTabla(mensajesMostrar){
+        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+        for (i = 0; i < mensajesMostrar.length; i++) {
+            $( "#tablaCuerpo" ).append(
+                "<tr id="+mensajesMostrar[i]._id+">"+
+                "<td>"+mensajesMostrar[i].emisor+"</td>" +
+                "<td>"+mensajesMostrar[i].destino+"</td>" +
+                "<td>"+mensajesMostrar[i].texto+"</td>" +
+                "</tr>" );
+            // Mucho cuidado con las comillas del eliminarCancion
+            //la id tiene que ir entre comillas ' '
+        }
+    }
+    function nuevoMensaje() {
+        $.ajax({
+            url: URLbase + "/mensaje/"+email,
+            type: "POST",
+            data: {
+                texto : $("#nuevo-mensaje").val(),
+            },
+            dataType: 'json',
+            headers: { "token": token },
+            success: function(respuesta) {
+                console.log("Agregado Mensaje: ");
+                //$( "#"+_id ).remove(); // eliminar el <tr> de la canción
+            },
+            error : function (error){
+                $( "#contenedor-principal" ).load("widget-login.html");
+            }
+        });
+        cargarMensajes();
+    }
+    cargarMensajes();
+    /*
+        function detalles(_id) {
+            idCancionSeleccionada = _id;
+            $( "#contenedor-principal" ).load( "widget-detalles.html");
+        }
+*/
+
+    var timeout=setTimeout(recargarTablaPeriodicamente,5000)
+    function recargarTablaPeriodicamente(){
+        console.log("Recargando")
+        cargarMensajes()
+        timeout=setTimeout(recargarTablaPeriodicamente,5000)
+    }
+
+
+
+    function ordenarPorEmisor(){
+        mensajes.sort(function(a, b) {
+            if(a.emisor > b.emisor ) return 1;
+            if(a.emisor < b.emisor ) return -1;
+            return 0;
+        });
+        actualizarTabla(mensajes);
+    }
+    function ordenarPorDestino(){
+        mensajes.sort(function(a, b) {
+            if(a.destino > b.destino ) return 1;
+            if(a.destino < b.destino ) return -1;
+            return 0;
+        });
+        actualizarTabla(mensajes);
+    }
+    function ordenarPorTexto(){
+        mensajes.sort(function(a, b) {
+            if(a.texto > b.texto ) return 1;
+            if(a.texto < b.texto ) return -1;
+            return 0;
+        });
+        actualizarTabla(mensajes);
+    }
+
+</script>
