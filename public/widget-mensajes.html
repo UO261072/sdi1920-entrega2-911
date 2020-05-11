@@ -11,6 +11,7 @@
             <th><a onclick="ordenarPorEmisor()">Emisor</a></th>
             <th><a onclick="ordenarPorDestino()">Destino</a></th>
             <th><a onclick="ordenarPorTexto()">Texto</a></th>
+            <th>Leido</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
@@ -63,6 +64,7 @@
                 "<td>"+mensajesMostrar[i].emisor+"</td>" +
                 "<td>"+mensajesMostrar[i].destino+"</td>" +
                 "<td>"+mensajesMostrar[i].texto+"</td>" +
+                "<td>"+mensajesMostrar[i].leido+"</td>" +
                 "</tr>" );
             // Mucho cuidado con las comillas del eliminarCancion
             //la id tiene que ir entre comillas ' '

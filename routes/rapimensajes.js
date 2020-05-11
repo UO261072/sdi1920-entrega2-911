@@ -40,6 +40,18 @@ module.exports = function(app, gestorBD) {
                     error:"se ha producido un error"
                 })
             }else{
+                if(req.body.user!=null)
+                    criterio={destino : req.session.usuario,emisor : req.body.user}
+                else
+                    criterio={destino : req.session.usuario,emisor : req.query.user}
+                gestorBD.mensajesLeidos(criterio,function (result) {
+                    if(result==null){
+                        res.status(500)
+                        res.json({
+                            error:"no se ha marcado comoo leido"
+                        })
+                    }
+                })
                 res.status(200);
                 res.send( JSON.stringify(mensajes) );
             }

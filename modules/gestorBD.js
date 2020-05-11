@@ -248,6 +248,34 @@ module.exports = {
             }
         })
 
-    }
+    },
+    mensajesLeidos: function (criterio,funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'),function (err,db) {
+            if(err){
+                funcionCallback(null)
+            }else{
+                let collection =db.collection('mensajes');
+                collection.find(criterio).toArray(function(err, mensajes) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        for(let i=0;i<mensajes.length;i++){
+                            mensajes[i].leido=true;
+                            collection.update(criterio,{$set: mensajes[i]},function (err,result) {
+                                if(err){
+                                    funcionCallback(null)
+                                }else{
+                                    funcionCallback(result)
+                                }
+                            })
+                        }
+
+                    }
+                    db.close();
+                });
+            }
+        })
+
+    },
 
 };
